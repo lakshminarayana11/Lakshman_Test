@@ -1,0 +1,59 @@
+
+1. Get rid of packages that are no longer required [Recommended]
+#sudo apt-get autoremove
+
+2. Clean up APT cache in Ubuntu
+#sudo du -sh /var/cache/apt 
+
+#sudo apt-get autoclean
+(OR)
+#sudo apt-get clean
+
+3. Clean the thumbnail cache
+#du -sh ~/.cache/thumbnails
+#rm -rf ~/.cache/thumbnails/*
+
+4. Remove old Linux kernels that were manually installed 
+#sudo dpkg --list 'linux-image*'
+#sudo apt-get remove linux-image-VERSION
+
+5. Remove orphaned packages  
+#sudo apt-get install gtkorphan
+
+6. Uninstalling unnecessary applications [Recommended]
+#sudo apt-get remove package-name1 package-name2
+
+7. Find and remove duplicate files
+
+8. Remove older versions of Snap applications  
+
+#du -h /var/lib/snapd/snaps
+4.0K    /var/lib/snapd/snaps/partial
+5.6G    /var/lib/snapd/snaps
+
+To create a new shell script and use the following lines in my script:
+
+#!/bin/bash
+# Removes old revisions of snaps
+# CLOSE ALL SNAPS BEFORE RUNNING THIS
+set -eu
+snap list --all | awk '/disabled/{print $1, $3}' |
+    while read snapname revision; do
+        snap remove "$snapname" --revision="$revision"
+    done
+
+Give it execute permission, run it with sudo and see the magic. The script removed the older Snap packages and freed over half of the 5 GB space used by Snap.
+
+du -h /var/lib/snapd/snaps
+4.0K    /var/lib/snapd/snaps/partial
+2.5G    /var/lib/snapd/snaps
+
+9. Using GUI tools to free space in Ubuntu
+Stacer is one such tool that we could use.
+
+10.Alternately,If we are using VMware VM or AWS instance or MSAzure VM we can suggest to the customer/Application owner and can be increased the disk space online 
+
+
+
+
+
